@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react'
 import produce from 'immer'
 import { connect } from 'react-redux'
-import { isRunning } from '../actions/actions'
+import { isRunning, generationCounter, generationReset } from '../actions/actions'
 
 const numRows = 50
 const numCols = 50
@@ -16,28 +16,39 @@ const operations = [
     [-1, 0],
 ]
 const Grid = (props) => {
-    const [grid, setGrid] = useState(() => {
+    const generateEmptyGrid = () => {
         const rows = [];
         for (let i = 0; i < numRows; i++) {
             rows.push(Array.from(Array(numCols), () => 0))
         }
         return rows
-    })
-    // console.log(grid)
-    const isRunning = () => {
-        props.isRunning()
-        runSimulation()
     }
 
+    const [grid, setGrid] = useState(() => {
+        return generateEmptyGrid()
+    })
+    // console.log(grid)
+
     // START SIMULATION \\
+    const genPlus = () => {
+        props.generationCounter()
+    }
     const refRunning = useRef(props.running)
+    refRunning.current = props.running
+
     const runSimulation = useCallback((props) => {
-        console.log('METHOD IS BEING CLICKED')
-        if (!refRunning) {
+        console.log('START WAS CLICKED: METHOD INVOKED & IS BEING LOOPED OVER ')
+        genPlus()
+
+        if (!refRunning.current) {
+            console.log('STOP WAS CLICKED: refRunning is false, so break and return nothing. /BreakCase')
             return
         }
         //simulate
+       
+
         setGrid((g) => {
+         
             return produce(g, gridCopy => {
                 for (let i = 0; i < numRows; i++) {
                     for (let k = 0; k < numCols; k++) {
@@ -62,12 +73,46 @@ const Grid = (props) => {
         setTimeout(runSimulation, 1000)
     }, [])
 
+    const isRunning = () => {
+        props.isRunning()
+
+        if (!props.running) {
+            console.log('check isRunning function on click')
+            refRunning.current = true
+            runSimulation()
+        }
+    }
+
+
     return (
         <>
             <div>
-            <button onClick={isRunning}>
-                {props.running ? 'stop' : 'start'}
-            </button>
+                <button onClick={isRunning}>
+                    {props.running ? 'stop' : 'start'}
+                </button>
+                <button onClick={() => {
+                     if (props.running) {
+                        return
+                    }
+                    setGrid(generateEmptyGrid())
+                    props.generationReset()
+                    console.log('Clear Grid button clicked, the state of the grid has been reset')
+                }}>
+                    clear
+                </button>
+                <button onClick={() => {
+                    if (props.running) {
+                        return
+                    }
+                    const rows = [];
+                    for (let i = 0; i < numRows; i++) {
+                        rows.push(Array.from(Array(numCols), () => Math.random() > .9 ? 1 : 0))
+                    }
+                    setGrid(rows)
+                    console.log('random seed was clicked on and generated')
+                }}>
+                    random seed
+                </button>
             </div>
 
             <div style={{
@@ -95,16 +140,18 @@ const Grid = (props) => {
                                 border: 'solid 1px black'
                             }} />
                     ))}
-
             </div>
+            {/* end of grid */}
+            <div> Generation: {props.generation} </div>
         </>
     )
 }
 const mapStateToProps = state => {
     return {
         running: state.running,
+        generation: state.generation
     }
 }
-export default connect(mapStateToProps, {isRunning})(Grid)
+export default connect(mapStateToProps, { isRunning, generationCounter, generationReset })(Grid)
 
 

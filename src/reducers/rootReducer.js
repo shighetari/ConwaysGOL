@@ -1,19 +1,11 @@
 import {
-    IS_RUNNING
+    IS_RUNNING, GENERATION, GENERATION_RESET
 } from '../actions/actions'
 
 const initialState = {
     running: false,
-    // grid: (() =>{
-    //     const numRows = 50
-    //     const numCols = 50
-    //     const rows = [];
-    //     for (let i = 0; i < numRows; i++) {
-    //         rows.push(Array.from(Array(numCols), () => 0))
-    //     }
-    //     return rows
-    // })
-
+    generation: 0,
+    speed: 1000,
 }
 
 export const rootReducer = (state = initialState, action) => {
@@ -27,8 +19,14 @@ export const rootReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 running: !state.running
             })
-                
-            
+        case GENERATION:
+            return Object.assign({}, state, {
+                generation: state.generation + 1
+            })
+        case GENERATION_RESET:
+            return Object.assign({}, state, {
+                generation: state.generation = 0
+            })
 
         default: return state
     }
