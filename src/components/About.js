@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { isRunning } from '../actions/actions'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 // import Grid from './Grid'
 
 
@@ -12,6 +12,7 @@ const About = (props) => {
     const play = () => {
        history.push('/game')
     }
+    
     return (
         <> <div> 
     These rules, which compare the behavior of the automaton to real life,
@@ -27,6 +28,10 @@ const About = (props) => {
           <button onClick = {play}>
              Click here to Play
           </button>
+          <br/>
+          <a href={'https://github.com/shighetari/ConwaysGOL.git'}> click here for the GitHub Repo</a>
+          
+
 
           <div className="App">
       <button
