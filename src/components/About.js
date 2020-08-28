@@ -17,17 +17,17 @@ const About = (props) => {
     These rules, which compare the behavior of the automaton to real life,
     <br/> can be condensed into the following: <br/> 
     <br/>
-<center> 1) Any live cell with two or three live neighbours survives. </center>
+<center> 1- Any live cell with two or three live neighbours survives. </center>
 <br/>
-<center>2) Any dead cell with three live neighbours becomes a live cell.</center>
+<center>2- Any dead cell with three live neighbours becomes a live cell.</center>
 <br/>
-<center>3) All other live cells die in the next generation. Similarly, all other dead cells stay dead.</center>
+<center>3- All other live cells die in the next generation. Similarly, all other dead cells stay dead.</center>
 </div>
       <div>
           <button onClick = {play}>
              Click here to Play
           </button>
-          
+
           <div className="App">
       <button
         onMouseEnter={() => setIsShown(true)}
