@@ -1,5 +1,5 @@
 import {
-    IS_RUNNING, GENERATION, GENERATION_RESET
+    IS_RUNNING, GENERATION, GENERATION_RESET, SPEED
 } from '../actions/actions'
 
 const initialState = {
@@ -26,6 +26,10 @@ export const rootReducer = (state = initialState, action) => {
         case GENERATION_RESET:
             return Object.assign({}, state, {
                 generation: state.generation = 0
+            })
+        case SPEED:
+            return Object.assign({}, state, {
+                speed: action.payload
             })
 
         default: return state

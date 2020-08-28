@@ -1,6 +1,6 @@
 import React from 'react'
 import Grid from './Grid'
-import Buttons from './Buttons'
+import About from './About'
 
 
 const GamePage = () => {
@@ -8,8 +8,8 @@ const GamePage = () => {
     return (
         <>
             <div>
-               Game Page
-                <Buttons component={Grid} />
+               Conways Game of Life: cellular automata
+                
                 <Grid />
             </div>
         </>

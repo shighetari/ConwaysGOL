@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useRef } from 'react'
 import produce from 'immer'
 import { connect } from 'react-redux'
-import { isRunning, generationCounter, generationReset } from '../actions/actions'
+import { isRunning, generationCounter, generationReset, selectSpeed, selectSpeedSlow } from '../actions/actions'
+import { useHistory } from 'react-router-dom'
 
 const numRows = 50
 const numCols = 50
@@ -15,7 +16,14 @@ const operations = [
     [1, 0],
     [-1, 0],
 ]
+
 const Grid = (props) => {
+    const history = useHistory()
+
+    const howToPlay = () => {
+       history.push('/about')
+    }
+
     const generateEmptyGrid = () => {
         const rows = [];
         for (let i = 0; i < numRows; i++) {
@@ -35,6 +43,8 @@ const Grid = (props) => {
     }
     const refRunning = useRef(props.running)
     refRunning.current = props.running
+    const refSpeed = useRef(props.speed)
+    refSpeed.current = props.speed
 
     const runSimulation = useCallback((props) => {
         console.log('START WAS CLICKED: METHOD INVOKED & IS BEING LOOPED OVER ')
@@ -45,10 +55,10 @@ const Grid = (props) => {
             return
         }
         //simulate
-       
+
 
         setGrid((g) => {
-         
+
             return produce(g, gridCopy => {
                 for (let i = 0; i < numRows; i++) {
                     for (let k = 0; k < numCols; k++) {
@@ -70,7 +80,7 @@ const Grid = (props) => {
             })
         })
 
-        setTimeout(runSimulation, 1000)
+        setTimeout(runSimulation, refSpeed.current)
     }, [])
 
     const isRunning = () => {
@@ -91,7 +101,7 @@ const Grid = (props) => {
                     {props.running ? 'stop' : 'start'}
                 </button>
                 <button onClick={() => {
-                     if (props.running) {
+                    if (props.running) {
                         return
                     }
                     setGrid(generateEmptyGrid())
@@ -112,6 +122,19 @@ const Grid = (props) => {
                     console.log('random seed was clicked on and generated')
                 }}>
                     random seed
+                </button>
+                <button onClick={() => {
+                    props.selectSpeed()
+                }} >
+                    fast
+                </button>
+                <button onClick={() => {
+                    props.selectSpeedSlow()
+                }} >
+                    slow
+                </button>
+                <button onClick={howToPlay}>
+                    How to Play
                 </button>
             </div>
 
@@ -149,9 +172,10 @@ const Grid = (props) => {
 const mapStateToProps = state => {
     return {
         running: state.running,
-        generation: state.generation
+        generation: state.generation,
+        speed: state.speed
     }
 }
-export default connect(mapStateToProps, { isRunning, generationCounter, generationReset })(Grid)
+export default connect(mapStateToProps, { isRunning, generationCounter, generationReset, selectSpeed, selectSpeedSlow})(Grid)
 
 

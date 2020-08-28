@@ -8,6 +8,7 @@ import { createStore, applyMiddleware } from "redux"
 import { Provider } from 'react-redux'
 import thunk from "redux-thunk"
 import {rootReducer as reducer} from './reducers/rootReducer'
+import About from './components/About';
 
 const store = createStore(reducer, applyMiddleware(thunk))
 
@@ -22,6 +23,8 @@ function App() {
             <Switch>
               <Route exact path="/" component={LandingPage} />
               <Route exact path="/game" component={GamePage} />
+              <Route exact path="/about" component={About} />
+
             </Switch>
           </header>
         </div>

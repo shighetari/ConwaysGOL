@@ -18,6 +18,10 @@ export const generationReset = () => dispatch => {
 }
 
 export const selectSpeed = () => dispatch => {
-
+        dispatch({type: SPEED, payload: 10})
+    
+}
+export const selectSpeedSlow = () => dispatch => {
+    dispatch({type: SPEED, payload: 2000})
 }
 

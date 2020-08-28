@@ -11,7 +11,7 @@ const playGame = () => {
     return (
         <>
         <div>
-            TEST LandingPage
+            TEST LandingPage, will build up for portfolio site.
             <br/>
             <button
             onClick={playGame}
